@@ -16,7 +16,7 @@ public class DAOAccount
   }
 
     public List<Account> getAccounts(int ownerID) throws SQLException {
-        ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Bank\".Accounts WHERE custmerID = "
+        ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Bank\".Accounts WHERE customerID = "
                 + ownerID + "';");
         List<Account> accounts = new ArrayList<>();
         while ( rs.next() ) {
