@@ -1,6 +1,8 @@
 package tier3;
 
-public interface Tier3Server
+import java.rmi.Remote;
+
+public interface Tier3Server extends Remote
 {
 
 }
