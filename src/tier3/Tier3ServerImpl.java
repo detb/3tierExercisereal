@@ -47,7 +47,7 @@ public class Tier3ServerImpl implements Tier3Server
     }
     try
     {
-      List<Account> accounts = accountData.retrieveAccounts(ownerID);
+      List<Account> accounts = accountData.getAccounts(ownerID);
     }
     catch (Exception e)
     {
