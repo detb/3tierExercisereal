@@ -16,7 +16,7 @@ public class DAOAccount
   }
 
     public List<Account> getAccounts(int ownerID) throws SQLException {
-        ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Bank\".Accounts WHERE customerID = "
+        ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Accounts WHERE customerID = '"
                 + ownerID + "';");
         List<Account> accounts = new ArrayList<>();
         while ( rs.next() ) {
@@ -29,4 +29,21 @@ public class DAOAccount
         rs.close();
         return accounts;
     }
+
+    public boolean login(int ownerID, String password) throws SQLException
+    {
+      ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Customer WHERE ssn = '"
+          + ownerID + "' AND password = '" + password + "';");
+      while ( rs.next() )
+      {
+        rs.getString("password");
+        DBConn.closeStatement();
+        rs.close();
+        return true;
+      }
+      DBConn.closeStatement();
+      rs.close();
+      return false;
+    }
+
 }

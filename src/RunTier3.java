@@ -9,5 +9,7 @@ public class RunTier3
   {
     Tier3ServerImpl server = new Tier3ServerImpl();
     server.startServer();
+
+    System.out.println(server.login(56789,"1234"));
   }
 }

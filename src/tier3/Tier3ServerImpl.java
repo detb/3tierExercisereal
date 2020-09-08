@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Tier3ServerImpl implements Tier3Server
@@ -48,6 +49,7 @@ public class Tier3ServerImpl implements Tier3Server
     try
     {
       List<Account> accounts = accountData.getAccounts(ownerID);
+      return accounts;
     }
     catch (Exception e)
     {
@@ -55,10 +57,22 @@ public class Tier3ServerImpl implements Tier3Server
     } return null;
   }
 
-  @Override public void login(String ownerID, String password)
-      throws RemoteException
+  @Override public List<Account> login(int ownerID, String password)
   {
-
+    if (accountData == null)
+    {
+      accountData = new DAOAccount(DBConn);
+    }
+    try
+    {
+      if (accountData.login(ownerID,password))
+        return getAccounts(ownerID);
+    }
+    catch (SQLException throwables)
+    {
+      throwables.printStackTrace();
+    }
+    return null;
   }
 
   @Override public double getBalance(int accountID) throws RemoteException

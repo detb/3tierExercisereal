@@ -11,7 +11,7 @@ public interface Tier3Server extends Remote
 {
   void startServer() throws RemoteException, AlreadyBoundException;
   List<Account> getAccounts(int ownerID) throws RemoteException;
-  void login(String ownerID, String password) throws RemoteException;
+  List<Account> login(int ownerID, String password) throws RemoteException;
   double getBalance(int accountID) throws RemoteException;
   void exchange(double amount, int accountID) throws RemoteException;
 }
