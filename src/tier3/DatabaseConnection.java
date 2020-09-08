@@ -39,5 +39,26 @@ public class DatabaseConnection
     }
   }
 
+  public void addData(String sql)
+  {
+    try {
+      stmt = c.createStatement();
+      stmt.executeQuery(sql);
+      closeStatement();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+  }
 
+  public ResultSet retrieveData(String sql)
+  {
+    try {
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery(sql);
+      return rs;
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+    return null;
+  }
 }
