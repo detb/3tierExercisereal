@@ -1,10 +1,13 @@
 package tier3;
 
+import shared.Account;
+
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class Tier3ServerImpl implements Tier3Server
 {
@@ -14,12 +17,46 @@ public class Tier3ServerImpl implements Tier3Server
     this.DBConn = new DatabaseConnection();
   }
 
-  public void startServer() throws RemoteException, AlreadyBoundException
+  public void startServer()
   {
-    UnicastRemoteObject.exportObject(this,0);
-    Registry registry = LocateRegistry.createRegistry(1099);
-    registry.bind("BankTier3Server", this);
-    DBConn.startDB();
-    System.out.println("Server started.");
+    try
+    {
+      UnicastRemoteObject.exportObject(this,0);
+      Registry registry = LocateRegistry.createRegistry(1099);
+      registry.bind("BankTier3Server", this);
+      DBConn.startDB();
+      System.out.println("Server started.");
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+    }
+    catch (AlreadyBoundException e)
+    {
+      e.printStackTrace();
+    }
+
+  }
+
+  @Override public List<Account> getAccounts(int ownerID) throws RemoteException
+  {
+    return null;
+  }
+
+  @Override public void login(String ownerID, String password)
+      throws RemoteException
+  {
+
+  }
+
+  @Override public double getBalance(int accountID) throws RemoteException
+  {
+    return 0;
+  }
+
+  @Override public void exchange(double amount, int accountID)
+      throws RemoteException
+  {
+
   }
 }

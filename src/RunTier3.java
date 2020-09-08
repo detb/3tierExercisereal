@@ -8,17 +8,6 @@ public class RunTier3
   public static void main(String[] args)
   {
     Tier3ServerImpl server = new Tier3ServerImpl();
-    try
-    {
-      server.startServer();
-    }
-    catch (RemoteException e)
-    {
-      e.printStackTrace();
-    }
-    catch (AlreadyBoundException e)
-    {
-      e.printStackTrace();
-    }
+    server.startServer();
   }
 }
