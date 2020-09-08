@@ -12,6 +12,7 @@ import java.util.List;
 public class Tier3ServerImpl implements Tier3Server
 {
   private DatabaseConnection DBConn;
+  private DAOAccount accountData;
   public Tier3ServerImpl()
   {
     this.DBConn = new DatabaseConnection();
@@ -38,9 +39,20 @@ public class Tier3ServerImpl implements Tier3Server
 
   }
 
-  @Override public List<Account> getAccounts(int ownerID) throws RemoteException
+  @Override public List<Account> getAccounts(int ownerID)
   {
-    return null;
+    if (accountData == null)
+    {
+      accountData = new DAOAccount(DBConn);
+    }
+    try
+    {
+      List<Account> accounts = accountData.retrieveAccounts(ownerID);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    } return null;
   }
 
   @Override public void login(String ownerID, String password)
