@@ -1,5 +1,4 @@
 import tier2.Bank;
-import tier2.Tier2ClientImpl;
 import tier2.Tier2ServerImpl;
 
 public class RunTier2
@@ -11,6 +10,5 @@ public class RunTier2
     server.startServer(bank1);
     server.startClient();
 
-    System.out.println(server.login(56789,"1234"));
   }
 }

@@ -39,11 +39,13 @@ public class Tier1ClientImpl implements Tier1Client{
         {
             System.out.println("Enter bank id:");
             id = in.nextInt();
+            in.nextLine();
         }while(!connectClient(id));
         do
         {
             System.out.println("Enter userID:");
             un = in.nextInt();
+            in.nextLine();
             System.out.println("Enter password:");
             pass = in.nextLine();
         }
