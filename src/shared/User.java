@@ -8,6 +8,7 @@ public class User implements Serializable
   private int userID;
   private String name;
   private Type type;
+  private String bank;
 
   public User(int ssn, int userID, String name, Type type)
   {
@@ -36,4 +37,15 @@ public class User implements Serializable
   {
     return type;
   }
+
+  public String getBank()
+  {
+    return bank;
+  }
+
+  public void setBank(String bank)
+  {
+    this.bank = bank;
+  }
+
 }

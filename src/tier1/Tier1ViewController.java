@@ -1,6 +1,7 @@
 package tier1;
 
 import shared.Account;
+import shared.Type;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -18,13 +19,18 @@ public class Tier1ViewController
     this.accounts = new ArrayList<>();
     this.accounts = (ArrayList<Account>) accounts;
     this.client = client;
-    showAccounts();
+
+    if (client.getUser().getType() == Type.USER)
+      showAccounts();
+    else
+      System.out.println(client.getUser().getType());
   }
 
   public void showAccounts() throws RemoteException
   {
     clearScreen();
     int w = 36;
+    System.out.println(client.getUser().getBank() + " says: ");
     System.out.println("      ___       __   __         ___ ");
     System.out.println("|  | |__  |    /  ` /  \\  |\\/| |__  ");
     System.out.println("|/\\| |___ |___ \\__, \\__/  |  | |___ ");

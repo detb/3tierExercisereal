@@ -15,6 +15,7 @@ import java.util.List;
 public class Tier2ServerImpl implements Tier2Server
 {
     private Tier3Server tier3Server;
+    private Bank bank;
 
     public void startClient()
     {
@@ -35,8 +36,8 @@ public class Tier2ServerImpl implements Tier2Server
     {
         try
         {
+            this.bank = bank;
             String name = "BankTier2Server" + bank.getPort();
-
             UnicastRemoteObject.exportObject(this,0);
             Registry registry = LocateRegistry.createRegistry(bank.getPort());
             registry.bind(name, this);
@@ -52,7 +53,10 @@ public class Tier2ServerImpl implements Tier2Server
     @Override
     public User login(int ownerID, String password){
         try {
-            return tier3Server.login(ownerID, password);
+            User user = tier3Server.login(ownerID, password);
+            System.out.println("User: " + user.getName() + " logged into their account");
+            user.setBank(bank.getName());
+            return user;
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -54,7 +54,7 @@ public class Tier1ClientImpl implements Tier1Client{
             user = tier2Server.login(un,pass);
         }
         while(user == null);
-
+        System.out.println("Login success..");
         tier1ViewController = new Tier1ViewController(tier2Server.getAccounts(un), this);
     }
 
