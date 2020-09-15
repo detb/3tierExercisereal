@@ -2,6 +2,7 @@ package tier3;
 
 import shared.Account;
 import shared.User;
+import shared.Bank;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
@@ -15,4 +16,5 @@ public interface Tier3Server extends Remote
   User login(int ownerID, String password) throws RemoteException;
   double getBalance(int accountID) throws RemoteException;
   boolean withdraw(double amount, int accountID) throws RemoteException;
+  void connect(Bank bank) throws RemoteException;
 }

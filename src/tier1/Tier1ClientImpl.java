@@ -1,5 +1,6 @@
 package tier1;
 
+import shared.Account;
 import shared.User;
 import tier2.Tier2Server;
 
@@ -8,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Scanner;
 
 public class Tier1ClientImpl implements Tier1Client{
@@ -67,5 +69,10 @@ public class Tier1ClientImpl implements Tier1Client{
     @Override public User getUser()
     {
         return user;
+    }
+
+    @Override public List<Account> getAccounts() throws RemoteException
+    {
+        return tier2Server.getAccounts(user.getUserID());
     }
 }

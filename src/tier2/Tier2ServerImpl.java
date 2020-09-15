@@ -1,6 +1,7 @@
 package tier2;
 
 import shared.Account;
+import shared.Bank;
 import shared.User;
 import tier3.Tier3Server;
 
@@ -23,6 +24,7 @@ public class Tier2ServerImpl implements Tier2Server
         {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             tier3Server = (Tier3Server) registry.lookup("BankTier3Server");
+            tier3Server.connect(bank);
             System.out.println("Tier 2 client connected to tier 3 server.");
         }
         catch (RemoteException | NotBoundException e)

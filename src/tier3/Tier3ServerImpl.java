@@ -2,6 +2,7 @@ package tier3;
 
 import shared.Account;
 import shared.User;
+import shared.Bank;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
@@ -9,15 +10,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tier3ServerImpl implements Tier3Server
 {
   private DatabaseConnection DBConn;
   private DAOAccount accountData;
+  private ArrayList<Bank> banks;
   public Tier3ServerImpl()
   {
     this.DBConn = new DatabaseConnection();
+    banks = new ArrayList<>();
   }
 
   public void startServer()
@@ -97,5 +101,11 @@ public class Tier3ServerImpl implements Tier3Server
       e.printStackTrace();
     }
     return false;
+  }
+
+  @Override public void connect(Bank bank) throws RemoteException
+  {
+    banks.add(bank);
+    System.out.println(bank.getName() + ", successfully connected with ID: " + bank.getPort());
   }
 }

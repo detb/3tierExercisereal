@@ -68,7 +68,6 @@ public class DAOAccount
         double saldo = rs.getDouble("saldo");
         DBConn.closeStatement();
         rs.close();
-        System.out.println("Set saldo to: " + (saldo - amount));
         DBConn.updateData("UPDATE \"Tier3Bank\".Accounts SET saldo = " + (saldo - amount) + " where accountID = " + accountID + ";");
         return true;
       }

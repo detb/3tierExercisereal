@@ -29,6 +29,8 @@ public class Tier1ViewController
   public void showAccounts() throws RemoteException
   {
     clearScreen();
+    accounts = (ArrayList<Account>) client.getAccounts();
+
     int w = 36;
     System.out.println(client.getUser().getBank() + " says: ");
     System.out.println("      ___       __   __         ___ ");
