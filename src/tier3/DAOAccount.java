@@ -16,13 +16,14 @@ public class DAOAccount
   }
 
     public List<Account> getAccounts(int ownerID) throws SQLException {
-        ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Accounts WHERE customerID = '"
+        ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Accounts WHERE userID = '"
                 + ownerID + "';");
         List<Account> accounts = new ArrayList<>();
         while ( rs.next() ) {
             int accountID = rs.getInt("accountID");
             String accountName = rs.getString("accountName");
-            Account account = new Account(accountID, accountName, ownerID);
+            int saldo = rs.getInt("saldo");
+            Account account = new Account(accountID, accountName, ownerID, saldo);
             accounts.add(account);
         }
         DBConn.closeStatement();
@@ -32,13 +33,30 @@ public class DAOAccount
 
     public boolean login(int ownerID, String password) throws SQLException
     {
-      ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Customer WHERE ssn = '"
+      ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Users WHERE userID = '"
           + ownerID + "' AND password = '" + password + "';");
       while ( rs.next() )
       {
         rs.getString("password");
         DBConn.closeStatement();
         rs.close();
+        return true;
+      }
+      DBConn.closeStatement();
+      rs.close();
+      return false;
+    }
+
+    public boolean withdraw(int accountID, double amount)  throws SQLException{
+      ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Accounts WHERE accountID = '"
+          + accountID + "' AND saldo >= '" + amount + "';");
+      while ( rs.next() )
+      {
+        double saldo = rs.getDouble("saldo");
+        DBConn.closeStatement();
+        rs.close();
+        System.out.println("Set saldo to: " + (saldo - amount));
+        DBConn.updateData("UPDATE \"Tier3Bank\".Accounts SET saldo = " + (saldo - amount) + " where accountID = " + accountID + ";");
         return true;
       }
       DBConn.closeStatement();

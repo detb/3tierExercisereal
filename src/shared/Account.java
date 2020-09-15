@@ -7,11 +7,13 @@ public class Account implements Serializable
     private int accountID;
     private String name;
     private int ownerID;
+    private double saldo;
 
-    public Account(int accountID, String name, int ownerID){
+    public Account(int accountID, String name, int ownerID, double saldo){
         this.accountID = accountID;
         this.name = name;
         this.ownerID = ownerID;
+        this.saldo = saldo;
     }
 
     public int getAccountID() {
@@ -28,14 +30,14 @@ public class Account implements Serializable
     }
 
     public double getBalance(){
-        return 0;
+        return saldo;
     }
 
     public void withdraw(double amount){
-
+        saldo -= amount;
     }
 
     public void deposit(double amount){
-
+        saldo += amount;
     }
 }

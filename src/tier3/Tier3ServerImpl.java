@@ -80,9 +80,22 @@ public class Tier3ServerImpl implements Tier3Server
     return 0;
   }
 
-  @Override public void exchange(double amount, int accountID)
+  @Override public boolean withdraw(double amount, int accountID)
       throws RemoteException
   {
-
+    if (accountData == null)
+    {
+      accountData = new DAOAccount(DBConn);
+    }
+    try
+    {
+      if (accountData.withdraw(accountID, amount))
+        return true;
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return false;
   }
 }

@@ -10,4 +10,5 @@ public interface Tier2Server extends Remote
 {
     List<Account> login(int ownerID, String password) throws RemoteException;
 
+  boolean withdraw(int accountID, int amount) throws RemoteException;
 }

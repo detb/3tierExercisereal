@@ -57,4 +57,14 @@ public class Tier2ServerImpl implements Tier2Server
         }
         return null;
     }
+
+    @Override public boolean withdraw(int accountID, int amount)
+    {
+        try{
+            return tier3Server.withdraw(amount, accountID);
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

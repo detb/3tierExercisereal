@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class Tier1ClientImpl implements Tier1Client{
 
     private Tier2Server tier2Server;
+    private Tier1ViewController tier1ViewController;
 
     public boolean connectClient(int port)
     {
@@ -50,5 +51,12 @@ public class Tier1ClientImpl implements Tier1Client{
             pass = in.nextLine();
         }
         while(tier2Server.login(un,pass) == null);
+        tier1ViewController = new Tier1ViewController(tier2Server.login(un,pass), this);
+    }
+
+    @Override public boolean withdraw(int accountID, int amount)
+        throws RemoteException
+    {
+        return tier2Server.withdraw(accountID, amount);
     }
 }

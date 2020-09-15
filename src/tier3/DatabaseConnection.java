@@ -50,6 +50,18 @@ public class DatabaseConnection
     }
   }
 
+  public void updateData(String sql)
+  {
+    try {
+      stmt = c.createStatement();
+      stmt.executeUpdate(sql);
+      c.commit();
+      closeStatement();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+  }
+
   public ResultSet retrieveData(String sql)
   {
     try {

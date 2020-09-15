@@ -13,5 +13,5 @@ public interface Tier3Server extends Remote
   List<Account> getAccounts(int ownerID) throws RemoteException;
   List<Account> login(int ownerID, String password) throws RemoteException;
   double getBalance(int accountID) throws RemoteException;
-  void exchange(double amount, int accountID) throws RemoteException;
+  boolean withdraw(double amount, int accountID) throws RemoteException;
 }
