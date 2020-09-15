@@ -1,6 +1,8 @@
 package tier3;
 
 import shared.Account;
+import shared.Type;
+import shared.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,20 +33,31 @@ public class DAOAccount
         return accounts;
     }
 
-    public boolean login(int ownerID, String password) throws SQLException
+    public User login(int ownerID, String password) throws SQLException
     {
       ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Users WHERE userID = '"
           + ownerID + "' AND password = '" + password + "';");
       while ( rs.next() )
       {
         rs.getString("password");
+        int ssn = rs.getInt("ssn");
+        String name = rs.getString("name");
+        String isAss = rs.getString("isAssistant");
+        String isAdm = rs.getString("isAdmin");
+        Type type;
+        if (isAss.equals("1"))
+          type = Type.ASSISTANT;
+        else if (isAdm.equals("1"))
+          type = Type.ADMIN;
+        else
+          type = Type.USER;
         DBConn.closeStatement();
         rs.close();
-        return true;
+        return new User(ssn, ownerID, name, type);
       }
       DBConn.closeStatement();
       rs.close();
-      return false;
+      return null;
     }
 
     public boolean withdraw(int accountID, double amount)  throws SQLException{

@@ -1,6 +1,7 @@
 package tier2;
 
 import shared.Account;
+import shared.User;
 import tier3.Tier3Server;
 
 import java.rmi.AlreadyBoundException;
@@ -49,7 +50,7 @@ public class Tier2ServerImpl implements Tier2Server
     }
 
     @Override
-    public List<Account> login(int ownerID, String password){
+    public User login(int ownerID, String password){
         try {
             return tier3Server.login(ownerID, password);
         } catch (RemoteException e) {
@@ -66,5 +67,16 @@ public class Tier2ServerImpl implements Tier2Server
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override public List<Account> getAccounts(int ownerID)
+        throws RemoteException
+    {
+        try {
+            return tier3Server.getAccounts(ownerID);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

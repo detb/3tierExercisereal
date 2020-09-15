@@ -1,5 +1,6 @@
 package tier1;
 
+import shared.User;
 import tier2.Tier2Server;
 
 import java.rmi.NotBoundException;
@@ -13,6 +14,7 @@ public class Tier1ClientImpl implements Tier1Client{
 
     private Tier2Server tier2Server;
     private Tier1ViewController tier1ViewController;
+    private User user;
 
     public boolean connectClient(int port)
     {
@@ -49,14 +51,21 @@ public class Tier1ClientImpl implements Tier1Client{
             in.nextLine();
             System.out.println("Enter password:");
             pass = in.nextLine();
+            user = tier2Server.login(un,pass);
         }
-        while(tier2Server.login(un,pass) == null);
-        tier1ViewController = new Tier1ViewController(tier2Server.login(un,pass), this);
+        while(user == null);
+
+        tier1ViewController = new Tier1ViewController(tier2Server.getAccounts(un), this);
     }
 
     @Override public boolean withdraw(int accountID, int amount)
         throws RemoteException
     {
         return tier2Server.withdraw(accountID, amount);
+    }
+
+    @Override public User getUser()
+    {
+        return user;
     }
 }

@@ -1,6 +1,7 @@
 package tier3;
 
 import shared.Account;
+import shared.User;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
@@ -57,7 +58,7 @@ public class Tier3ServerImpl implements Tier3Server
     } return null;
   }
 
-  @Override public List<Account> login(int ownerID, String password)
+  @Override public User login(int ownerID, String password)
   {
     if (accountData == null)
     {
@@ -65,8 +66,7 @@ public class Tier3ServerImpl implements Tier3Server
     }
     try
     {
-      if (accountData.login(ownerID,password))
-        return getAccounts(ownerID);
+      return accountData.login(ownerID,password);
     }
     catch (SQLException throwables)
     {

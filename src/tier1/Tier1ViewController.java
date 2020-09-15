@@ -23,12 +23,33 @@ public class Tier1ViewController
 
   public void showAccounts() throws RemoteException
   {
-    System.out.println("Your accounts: ");
+    clearScreen();
+    int w = 36;
+    System.out.println("      ___       __   __         ___ ");
+    System.out.println("|  | |__  |    /  ` /  \\  |\\/| |__  ");
+    System.out.println("|/\\| |___ |___ \\__, \\__/  |  | |___ ");
+    for (int i = 0; i < (w-client.getUser().getName().length())/2; i++)
+    {
+      System.out.print(" ");
+    }
+    System.out.println(client.getUser().getName());
+    System.out.println("");
+    System.out.println("          Your accounts: ");
+    System.out.println("");
+    System.out.println("   Name                    Balance");
     for (int i = 0; i < accounts.size(); i++)
     {
-      System.out.println(i+1 + ") " + accounts.get(i).getName() + ":    " + accounts.get(i).getBalance());
+      String b = accounts.get(i).getBalance() + "";
+      System.out.print(i+1 + ") " + accounts.get(i).getName() + ":");
+      for (int j = 0; j < w - 6 - accounts.get(i).getName().length() - b.length(); j++)
+      {
+        System.out.print(" ");
+      }
+      System.out.println(b);
     }
-    System.out.println("Which account would you like to withdraw from?");
+    System.out.println(" ");
+    System.out.println("Which account would you like to ");
+    System.out.println("withdraw from?");
     Scanner in = new Scanner(System.in);
     withdraw(in.nextInt() - 1);
   }
@@ -47,5 +68,9 @@ public class Tier1ViewController
       System.out.println("Something went wrong!");
     }
     showAccounts();
+  }
+  public void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
   }
 }
