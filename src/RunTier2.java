@@ -7,10 +7,10 @@ public class RunTier2
   public static void main(String[] args)
   {
     Tier2ServerImpl server = new Tier2ServerImpl();
-    Tier2ClientImpl client = new Tier2ClientImpl();
     Bank bank1 = new Bank("First and best bank", 1098);
     server.startServer(bank1);
-    client.startClient();
+    server.startClient();
 
+    System.out.println(server.login(56789,"1234"));
   }
 }
