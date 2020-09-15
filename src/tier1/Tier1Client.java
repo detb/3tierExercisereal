@@ -1,5 +1,7 @@
 package tier1;
 
-public interface Tier1Client
+import java.rmi.Remote;
+
+public interface Tier1Client extends Remote
 {
 }
