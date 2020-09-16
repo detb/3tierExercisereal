@@ -91,4 +91,9 @@ public class Tier2ServerImpl implements Tier2Server
     {
         return tier3Server.createAccount(userID, name);
     }
+
+    @Override
+    public boolean deposit(int accountID, int amount) throws RemoteException {
+        return tier3Server.deposit(accountID, amount);
+    }
 }

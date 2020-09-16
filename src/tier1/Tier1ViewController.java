@@ -21,9 +21,13 @@ public class Tier1ViewController
     this.client = client;
 
     if (client.getUser().getType() == Type.USER)
-      showAccounts();
+      showAccounts(Type.USER);
     else if (client.getUser().getType() == Type.ADMIN)
       createAccount();
+    else if (client.getUser().getType() == Type.ASSISTANT)
+    {
+      showAccounts(Type.ASSISTANT);
+    }
     else
       System.out.println(client.getUser().getType());
   }
@@ -43,10 +47,19 @@ public class Tier1ViewController
     System.out.println("Success");
   }
 
-  public void showAccounts() throws RemoteException
+  public void showAccounts(Type userclass) throws RemoteException
   {
+    Scanner in = new Scanner(System.in);
     clearScreen();
-    accounts = (ArrayList<Account>) client.getAccounts();
+    if (userclass == Type.USER)
+      accounts = (ArrayList<Account>) client.getAccounts(client.getUser().getUserID());
+    else if (userclass == Type.ASSISTANT)
+    {
+      System.out.println("Please enter userID: ");
+      int userID = in.nextInt();
+      in.nextLine();
+      accounts = (ArrayList<Account>) client.getAccounts(userID);
+    }
 
     int w = 36;
     System.out.println(client.getUser().getBank() + " says: ");
@@ -72,12 +85,57 @@ public class Tier1ViewController
       }
       System.out.println(b);
     }
-    System.out.println(" ");
-    System.out.println("Which account would you like to ");
-    System.out.println("withdraw from?");
-    Scanner in = new Scanner(System.in);
-    withdraw(in.nextInt() - 1);
+    if (userclass == Type.USER) {
+      System.out.println(" ");
+      System.out.println("Which account would you like to ");
+      System.out.println("withdraw from?");
+
+      withdraw(in.nextInt() - 1);
+    }
+    else if (userclass == Type.ASSISTANT)
+    {
+      int choice;
+      do {
+        System.out.println(" ");
+        System.out.println("Would you like to: \n1) Deposit \n2) Withdraw");
+        choice = in.nextInt();
+        in.nextLine();
+        if (choice == 1) {
+          System.out.println(" ");
+          System.out.println("Which account would you like to ");
+          System.out.println("deposit to?");
+
+          deposit(in.nextInt() - 1);
+
+        } else if (choice == 2) {
+          System.out.println(" ");
+          System.out.println("Which account would you like to ");
+          System.out.println("withdraw from?");
+
+          withdraw(in.nextInt() - 1);
+        }
+      }
+      while (choice != 1 && choice != 2);
+    }
   }
+
+  public void deposit(int i) throws RemoteException
+  {
+    System.out.println("Account total: " + accounts.get(i).getBalance());
+    System.out.println("Amount to deposit:");
+    Scanner in = new Scanner(System.in);
+    int amount = in.nextInt();
+    in.nextLine();
+    if (client.deposit(accounts.get(i).getAccountID(), amount)){
+      accounts.get(i).deposit(amount);
+      System.out.println("Success");
+    }
+    else {
+      System.out.println("Something went wrong!");
+    }
+    showAccounts(client.getUser().getType());
+  }
+
   public void withdraw(int i) throws RemoteException
   {
     System.out.println("Account total: " + accounts.get(i).getBalance());
@@ -92,7 +150,7 @@ public class Tier1ViewController
     else {
       System.out.println("Something went wrong!");
     }
-    showAccounts();
+    showAccounts(client.getUser().getType());
   }
   public void clearScreen() {
     System.out.print("\033[H\033[2J");

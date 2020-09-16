@@ -127,4 +127,22 @@ public class Tier3ServerImpl implements Tier3Server
       }
       return false;
   }
+
+  @Override
+  public boolean deposit(int accountID, int amount) throws RemoteException {
+    if (accountData == null)
+    {
+      accountData = new DAOAccount(DBConn);
+    }
+    try
+    {
+      if (accountData.deposit(accountID, amount))
+        return true;
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return false;
+  }
 }

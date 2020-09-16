@@ -90,4 +90,20 @@ public class DAOAccount
           + "('" + getNextAccountID() + "','" + name + "','" + userID + "','0');");
       return true;
     }
+
+    public boolean deposit(int accountID, int amount) throws SQLException {
+      ResultSet rs = DBConn.retrieveData("SELECT * FROM \"Tier3Bank\".Accounts WHERE accountID = '"
+              + accountID + "';");
+      while ( rs.next() )
+      {
+        double saldo = rs.getDouble("saldo");
+        DBConn.closeStatement();
+        rs.close();
+        DBConn.updateData("UPDATE \"Tier3Bank\".Accounts SET saldo = " + (saldo + amount) + " where accountID = " + accountID + ";");
+        return true;
+      }
+      DBConn.closeStatement();
+      rs.close();
+      return false;
+    }
 }

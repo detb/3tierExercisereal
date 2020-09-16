@@ -71,14 +71,19 @@ public class Tier1ClientImpl implements Tier1Client{
         return user;
     }
 
-    @Override public List<Account> getAccounts() throws RemoteException
+    @Override public List<Account> getAccounts(int userID) throws RemoteException
     {
-        return tier2Server.getAccounts(user.getUserID());
+        return tier2Server.getAccounts(userID);
     }
 
     @Override public boolean createAccount(String userID, String name)
         throws RemoteException
     {
         return tier2Server.createAccount(userID, name);
+    }
+
+    @Override
+    public boolean deposit(int accountID, int amount) throws RemoteException {
+        return tier2Server.deposit(accountID, amount);
     }
 }
