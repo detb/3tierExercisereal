@@ -75,4 +75,10 @@ public class Tier1ClientImpl implements Tier1Client{
     {
         return tier2Server.getAccounts(user.getUserID());
     }
+
+    @Override public boolean createAccount(String userID, String name)
+        throws RemoteException
+    {
+        return tier2Server.createAccount(userID, name);
+    }
 }

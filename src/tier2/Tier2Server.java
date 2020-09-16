@@ -13,4 +13,5 @@ public interface Tier2Server extends Remote
 
   boolean withdraw(int accountID, int amount) throws RemoteException;
   List<Account> getAccounts(int un) throws RemoteException;
+  boolean createAccount(String userID, String name) throws RemoteException;
 }

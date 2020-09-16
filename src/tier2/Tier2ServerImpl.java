@@ -85,4 +85,10 @@ public class Tier2ServerImpl implements Tier2Server
         }
         return null;
     }
+
+    @Override public boolean createAccount(String userID, String name)
+        throws RemoteException
+    {
+        return tier3Server.createAccount(userID, name);
+    }
 }

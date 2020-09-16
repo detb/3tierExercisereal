@@ -108,4 +108,23 @@ public class Tier3ServerImpl implements Tier3Server
     banks.add(bank);
     System.out.println(bank.getName() + ", successfully connected with ID: " + bank.getPort());
   }
+
+  @Override public boolean createAccount(String userID, String name)
+      throws RemoteException
+      {
+        if (accountData == null)
+      {
+        accountData = new DAOAccount(DBConn);
+      }
+      try
+      {
+        if (accountData.createAccount(userID, name))
+          return true;
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+      return false;
+  }
 }

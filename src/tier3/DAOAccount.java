@@ -76,4 +76,18 @@ public class DAOAccount
       return false;
     }
 
+    public int getNextAccountID() throws SQLException {
+      int quizID = -1;
+      ResultSet rs = DBConn.retrieveData("SELECT MAX(accountID) FROM \"Tier3Bank\".Accounts");
+      while (rs.next()) {
+        quizID = Integer.parseInt(rs.getString("max"));
+      }
+      return quizID + 1;
+    }
+    public boolean createAccount(String userID, String name) throws SQLException
+    {
+      DBConn.updateData("INSERT into \"Tier3Bank\".Accounts(accountID, accountName, userID, saldo) values"
+          + "('" + getNextAccountID() + "','" + name + "','" + userID + "','0');");
+      return true;
+    }
 }

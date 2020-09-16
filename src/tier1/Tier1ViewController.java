@@ -22,8 +22,25 @@ public class Tier1ViewController
 
     if (client.getUser().getType() == Type.USER)
       showAccounts();
+    else if (client.getUser().getType() == Type.ADMIN)
+      createAccount();
     else
       System.out.println(client.getUser().getType());
+  }
+
+  private void createAccount()  throws RemoteException
+  {
+    String userID, name;
+    do
+    {
+      Scanner in = new Scanner(System.in);
+      System.out.println("Type userID for the user:");
+      userID = in.nextLine();
+      System.out.println("Type name for account: ");
+      name = in.nextLine();
+    }
+    while(client.createAccount(userID, name));
+    System.out.println("Success");
   }
 
   public void showAccounts() throws RemoteException
