@@ -2,7 +2,9 @@ package tier1;
 
 import shared.Account;
 import shared.Type;
+import shared.User;
 
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ public class Tier1ViewController
 {
   ArrayList<Account> accounts;
   Tier1Client client;
+  User user;
 
   public Tier1ViewController(List<Account> accounts, Tier1Client client)
       throws RemoteException
@@ -19,17 +22,26 @@ public class Tier1ViewController
     this.accounts = new ArrayList<>();
     this.accounts = (ArrayList<Account>) accounts;
     this.client = client;
-
-    if (client.getUser().getType() == Type.USER)
+    client.addListener("Updated", this::showAccounts);
+    this.user = client.getUser();
+    if (user.getType() == Type.USER)
       showAccounts(Type.USER);
-    else if (client.getUser().getType() == Type.ADMIN)
+    else if (user.getType() == Type.ADMIN)
       createAccount();
-    else if (client.getUser().getType() == Type.ASSISTANT)
+    else if (user.getType() == Type.ASSISTANT)
     {
       showAccounts(Type.ASSISTANT);
     }
     else
       System.out.println(client.getUser().getType());
+  }
+
+  private void showAccounts(PropertyChangeEvent propertyChangeEvent){
+    try {
+      showAccounts(user.getType());
+    } catch (RemoteException e) {
+      e.printStackTrace();
+    }
   }
 
   private void createAccount()  throws RemoteException
@@ -46,6 +58,7 @@ public class Tier1ViewController
     while(client.createAccount(userID, name));
     System.out.println("Success");
   }
+
 
   public void showAccounts(Type userclass) throws RemoteException
   {

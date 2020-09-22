@@ -4,6 +4,8 @@ import shared.Account;
 import shared.User;
 import tier2.Tier2Server;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,6 +19,11 @@ public class Tier1ClientImpl implements Tier1Client{
     private Tier2Server tier2Server;
     private Tier1ViewController tier1ViewController;
     private User user;
+    private PropertyChangeSupport support;
+
+    public Tier1ClientImpl(){
+        support = new PropertyChangeSupport(this);
+    }
 
     public boolean connectClient(int port)
     {
@@ -85,5 +92,17 @@ public class Tier1ClientImpl implements Tier1Client{
     @Override
     public boolean deposit(int accountID, int amount) throws RemoteException {
         return tier2Server.deposit(accountID, amount);
+    }
+
+    @Override public void addListener(String eventName,
+                                      PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(eventName, listener);
+    }
+
+    @Override public void removeListener(String eventName,
+                                         PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(eventName, listener);
     }
 }

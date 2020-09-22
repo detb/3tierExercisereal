@@ -9,11 +9,9 @@ import java.util.List;
 
 public interface Tier2Server extends Remote
 {
-    User login(int ownerID, String password) throws RemoteException;
-
+  User login(int ownerID, String password) throws RemoteException;
   boolean withdraw(int accountID, int amount) throws RemoteException;
   List<Account> getAccounts(int un) throws RemoteException;
   boolean createAccount(String userID, String name) throws RemoteException;
-
-    boolean deposit(int accountID, int amount) throws RemoteException;
+  boolean deposit(int accountID, int amount) throws RemoteException;
 }

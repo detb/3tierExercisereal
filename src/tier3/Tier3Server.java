@@ -18,6 +18,5 @@ public interface Tier3Server extends Remote
   boolean withdraw(double amount, int accountID) throws RemoteException;
   void connect(Bank bank) throws RemoteException;
   boolean createAccount(String userID, String name) throws RemoteException;
-
-    boolean deposit(int accountID, int amount) throws RemoteException;
+  boolean deposit(int accountID, int amount) throws RemoteException;
 }

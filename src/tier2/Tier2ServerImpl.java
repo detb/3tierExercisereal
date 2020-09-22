@@ -5,6 +5,7 @@ import shared.Bank;
 import shared.User;
 import tier3.Tier3Server;
 
+import java.beans.PropertyChangeSupport;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -17,6 +18,8 @@ public class Tier2ServerImpl implements Tier2Server
 {
     private Tier3Server tier3Server;
     private Bank bank;
+    private List<User> users;
+    private PropertyChangeSupport support;
 
     public void startClient()
     {
@@ -25,6 +28,7 @@ public class Tier2ServerImpl implements Tier2Server
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             tier3Server = (Tier3Server) registry.lookup("BankTier3Server");
             tier3Server.connect(bank);
+            support = new PropertyChangeSupport(this);
             System.out.println("Tier 2 client connected to tier 3 server.");
         }
         catch (RemoteException | NotBoundException e)
@@ -58,6 +62,7 @@ public class Tier2ServerImpl implements Tier2Server
             User user = tier3Server.login(ownerID, password);
             System.out.println("User: " + user.getName() + " logged into their account");
             user.setBank(bank.getName());
+            users.add(user);
             return user;
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -68,6 +73,7 @@ public class Tier2ServerImpl implements Tier2Server
     @Override public boolean withdraw(int accountID, int amount)
     {
         try{
+            support.firePropertyChange("Updated", null, null);
             return tier3Server.withdraw(amount, accountID);
         }catch (RemoteException e){
             e.printStackTrace();
@@ -94,6 +100,7 @@ public class Tier2ServerImpl implements Tier2Server
 
     @Override
     public boolean deposit(int accountID, int amount) throws RemoteException {
+        support.firePropertyChange("Updated", null, null);
         return tier3Server.deposit(accountID, amount);
     }
 }

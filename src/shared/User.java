@@ -1,5 +1,7 @@
 package shared;
 
+import tier1.Tier1Client;
+
 import java.io.Serializable;
 
 public class User implements Serializable
@@ -9,6 +11,7 @@ public class User implements Serializable
   private String name;
   private Type type;
   private String bank;
+  private Tier1Client client;
 
   public User(int ssn, int userID, String name, Type type)
   {
@@ -48,4 +51,11 @@ public class User implements Serializable
     this.bank = bank;
   }
 
+  public Tier1Client getClient() {
+    return client;
+  }
+
+  public void setClient(Tier1Client client) {
+    this.client = client;
+  }
 }
