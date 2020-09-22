@@ -22,7 +22,6 @@ public class Tier1ViewController
     this.accounts = new ArrayList<>();
     this.accounts = (ArrayList<Account>) accounts;
     this.client = client;
-    client.addListener("Updated", this::showAccounts);
     this.user = client.getUser();
     if (user.getType() == Type.USER)
       showAccounts(Type.USER);
@@ -36,7 +35,7 @@ public class Tier1ViewController
       System.out.println(client.getUser().getType());
   }
 
-  private void showAccounts(PropertyChangeEvent propertyChangeEvent){
+  public void update(){
     try {
       showAccounts(user.getType());
     } catch (RemoteException e) {

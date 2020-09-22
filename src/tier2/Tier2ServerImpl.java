@@ -12,14 +12,15 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tier2ServerImpl implements Tier2Server
 {
     private Tier3Server tier3Server;
     private Bank bank;
-    private List<User> users;
     private PropertyChangeSupport support;
+    private ArrayList<User> users;
 
     public void startClient()
     {
@@ -29,6 +30,7 @@ public class Tier2ServerImpl implements Tier2Server
             tier3Server = (Tier3Server) registry.lookup("BankTier3Server");
             tier3Server.connect(bank);
             support = new PropertyChangeSupport(this);
+            users = new ArrayList<>();
             System.out.println("Tier 2 client connected to tier 3 server.");
         }
         catch (RemoteException | NotBoundException e)
@@ -62,7 +64,6 @@ public class Tier2ServerImpl implements Tier2Server
             User user = tier3Server.login(ownerID, password);
             System.out.println("User: " + user.getName() + " logged into their account");
             user.setBank(bank.getName());
-            users.add(user);
             return user;
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -70,15 +71,26 @@ public class Tier2ServerImpl implements Tier2Server
         return null;
     }
 
-    @Override public boolean withdraw(int accountID, int amount)
+    @Override public boolean withdraw(int ownerID, int accountID, int amount)
     {
         try{
-            support.firePropertyChange("Updated", null, null);
+            //support.firePropertyChange("Updated", null, amount);
+            for (User user: users) {
+                if (user.getUserID() == ownerID){
+                    System.out.println("trigger");
+                    user.getClient().trigger();
+                }
+            }
             return tier3Server.withdraw(amount, accountID);
         }catch (RemoteException e){
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override public List<Account> getAccounts(User user) throws RemoteException{
+        users.add(user);
+        return getAccounts(user.getUserID());
     }
 
     @Override public List<Account> getAccounts(int ownerID)
@@ -100,7 +112,7 @@ public class Tier2ServerImpl implements Tier2Server
 
     @Override
     public boolean deposit(int accountID, int amount) throws RemoteException {
-        support.firePropertyChange("Updated", null, null);
+        support.firePropertyChange("Updated", null, amount);
         return tier3Server.deposit(accountID, amount);
     }
 }

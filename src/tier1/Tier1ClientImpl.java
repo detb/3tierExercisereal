@@ -64,13 +64,14 @@ public class Tier1ClientImpl implements Tier1Client{
         }
         while(user == null);
         System.out.println("Login success..");
-        tier1ViewController = new Tier1ViewController(tier2Server.getAccounts(un), this);
+        user.setClient(this);
+        tier1ViewController = new Tier1ViewController(tier2Server.getAccounts(user), this);
     }
 
     @Override public boolean withdraw(int accountID, int amount)
         throws RemoteException
     {
-        return tier2Server.withdraw(accountID, amount);
+        return tier2Server.withdraw(user.getUserID(), accountID, amount);
     }
 
     @Override public User getUser()
@@ -98,6 +99,11 @@ public class Tier1ClientImpl implements Tier1Client{
                                       PropertyChangeListener listener)
     {
         support.addPropertyChangeListener(eventName, listener);
+    }
+
+    @Override
+    public void trigger() throws RemoteException {
+        tier1ViewController.update();
     }
 
     @Override public void removeListener(String eventName,
